@@ -1,0 +1,83 @@
+{
+  "topology": {
+    "type": "single",
+    "discovered_at": "YYYY-MM-DDTHH:mm:ss",
+    "discovery_strategy": "",
+    "subsystems": [],
+    "shared_libraries": [],
+    "dependency_edges": []
+  },
+  "last_generation": {
+    "timestamp": "YYYY-MM-DDTHH:mm:ss",
+    "branch": "main",
+    "commit_id": "auto_generated",
+    "generated_documents": [
+      "01_SYSTEM_OVERVIEW.md",
+      "02_CORE_MODULES.md",
+      "03_API_INTERFACE.md",
+      "04_DATA_MODEL.md",
+      "05_CONFIG_MANAGEMENT.md",
+      "06_UTILS_LIBRARIES.md"
+    ],
+    "per_doc": {
+      "01_SYSTEM_OVERVIEW.md": {
+        "commit_id": "auto_generated",
+        "timestamp": "YYYY-MM-DDTHH:mm:ss",
+        "content_schema_version": "2.2.0"
+      },
+      "02_CORE_MODULES.md": {
+        "commit_id": "auto_generated",
+        "timestamp": "YYYY-MM-DDTHH:mm:ss",
+        "content_schema_version": "2.2.0"
+      },
+      "03_API_INTERFACE.md": {
+        "commit_id": "auto_generated",
+        "timestamp": "YYYY-MM-DDTHH:mm:ss",
+        "content_schema_version": "2.2.0"
+      },
+      "04_DATA_MODEL.md": {
+        "commit_id": "auto_generated",
+        "timestamp": "YYYY-MM-DDTHH:mm:ss",
+        "content_schema_version": "2.2.0"
+      },
+      "05_CONFIG_MANAGEMENT.md": {
+        "commit_id": "auto_generated",
+        "timestamp": "YYYY-MM-DDTHH:mm:ss",
+        "content_schema_version": "2.2.0"
+      },
+      "06_UTILS_LIBRARIES.md": {
+        "commit_id": "auto_generated",
+        "timestamp": "YYYY-MM-DDTHH:mm:ss",
+        "content_schema_version": "2.2.0"
+      }
+    }
+  },
+  "drift_status": {
+    "last_check": "YYYY-MM-DDTHH:mm:ss",
+    "last_check_commit": "",
+    "stale_docs": [],
+    "changed_files": 0,
+    "commits_since_oldest": 0,
+    "assessments": []
+  },
+  "indexes": {},
+  "coverage_gaps": [],
+  "generation_trace": {
+    "topology": "pending",
+    "indexes": {},
+    "depth_analysis": {},
+    "documents": {}
+  },
+  "quality_gates": {},
+  "content_schema_version": "2.2.0",
+  "version": "1.1.0",
+  "generator": "ease-arch-documentation",
+  "project_info": {
+    "name": "",
+    "version": "",
+    "description": ""
+  },
+  "snapshot": {},
+  "document_dependencies": {},
+  "decision_findings": []
+}

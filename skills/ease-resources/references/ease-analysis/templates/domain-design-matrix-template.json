@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "entries": [
+    {
+      "element_id": "UC-001",
+      "design_refs": [
+        ".eases/[FEATURE_NAME]/flow-2-design/detail/detail-design.md#UC-001"
+      ]
+    },
+    {
+      "element_id": "BR-001-rule-name",
+      "design_refs": [
+        ".eases/[FEATURE_NAME]/flow-2-design/detail/detail-design.md#BR-001-rule-name"
+      ]
+    }
+  ]
+}

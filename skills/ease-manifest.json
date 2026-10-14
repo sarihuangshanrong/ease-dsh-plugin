@@ -1,0 +1,31 @@
+{
+  "commands": {
+    "ease:starter": "ease-starter",
+    "ease:flow-1-analyze-brd": "ease-flow-1-analyze-brd",
+    "ease:flow-1-analyze-trd": "ease-flow-1-analyze-trd",
+    "ease:flow-2-design": "ease-flow-2-design",
+    "ease:flow-3-implement": "ease-flow-3-implement",
+    "ease:constitution": "ease-constitution",
+    "ease:bootstrap-system": "ease-bootstrap-system",
+    "ease:analyze-code": "ease-analyze-code",
+    "ease:arch-docs": "ease-arch-docs"
+  },
+  "resources": "ease-resources",
+  "skills": [
+    "ease-analysis",
+    "ease-spec",
+    "ease-test-case-design",
+    "ease-architecture",
+    "ease-architecture-design",
+    "ease-framework-code",
+    "ease-system-bootstrap",
+    "ease-testing",
+    "ease-code-implement",
+    "ease-coding",
+    "ease-code-review",
+    "ease-qa",
+    "ease-arch-documentation",
+    "test-driven-development"
+  ],
+  "external_reference_occurrences": 33
+}

@@ -1,0 +1,91 @@
+import pytest
+from unittest.mock import Mock, patch, MagicMock
+{{#module_imports}}
+from {{module}} import {{class_name}}
+{{/module_imports}}
+
+class Test{{class_name}}:
+
+    def setup_method(self):
+        """每个测试方法执行前的设置"""
+        {{#dependencies}}
+        self.{{name}} = Mock()
+        {{/dependencies}}
+
+        self.{{instance_name}} = {{class_name}}(
+            {{#dependencies}}
+            {{name}}=self.{{name}}{{^last}},{{/last}}
+            {{/dependencies}}
+        )
+
+    {{#methods}}
+    def test_{{method_name}}_{{scenario}}_{{expected_result}}(self):
+        """测试 {{method_name}} 方法 - {{scenario_description}}"""
+        # Given
+        {{#setup}}
+        {{{setup}}}
+        {{/setup}}
+
+        # When
+        {{#is_async}}
+        result = await self.{{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+        {{/is_async}}
+        {{^is_async}}
+        {{#is_void}}
+        self.{{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+        {{/is_void}}
+        {{^is_void}}
+        result = self.{{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+        {{/is_void}}
+        {{/is_async}}
+
+        # Then
+        {{#assertions}}
+        {{{assertion}}}
+        {{/assertions}}
+
+        {{#verifications}}
+        {{{verification}}}
+        {{/verifications}}
+
+    {{/methods}}
+
+{{#parametrized_tests}}
+@pytest.mark.parametrize("{{param_names}}", [
+    {{#test_cases}}
+    ({{values}}),  # {{case_description}}
+    {{/test_cases}}
+])
+def test_{{method_name}}_parametrized({{#dependencies}}mock_{{name}}, {{/dependencies}}instance, {{param_names}}):
+    """参数化测试 {{method_name}} 方法"""
+    # Given
+    {{#setup}}
+    {{{setup}}}
+    {{/setup}}
+
+    # When & Then
+    {{#raises_exception}}
+    with pytest.raises({{exception_type}}):
+        {{#is_void}}
+        instance.{{method_name}}({{param_names}})
+        {{/is_void}}
+        {{^is_void}}
+        result = instance.{{method_name}}({{param_names}})
+        {{/is_void}}
+    {{/raises_exception}}
+    {{^raises_exception}}
+    {{#is_void}}
+    instance.{{method_name}}({{param_names}})
+    {{#assertions}}
+    {{{assertion}}}
+    {{/assertions}}
+    {{/is_void}}
+    {{^is_void}}
+    result = instance.{{method_name}}({{param_names}})
+    {{#assertions}}
+    {{{assertion}}}
+    {{/assertions}}
+    {{/is_void}}
+    {{/raises_exception}}
+
+{{/parametrized_tests}}

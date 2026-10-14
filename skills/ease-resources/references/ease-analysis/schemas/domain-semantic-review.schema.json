@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ease.local/schemas/domain-semantic-review.schema.json",
+  "title": "Ease Domain Semantic Review",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "feature_name",
+    "base_commit",
+    "head_commit",
+    "verdict",
+    "risk_level",
+    "impacted_elements",
+    "evidence",
+    "reviewer",
+    "human_approval"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "feature_name": {"type": "string", "pattern": "^[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "base_commit": {"type": "string", "minLength": 1},
+    "head_commit": {"type": "string", "minLength": 1},
+    "verdict": {"enum": ["no-semantic-change", "aligned-domain-change", "semantic-drift"]},
+    "risk_level": {"enum": ["low", "medium", "high"]},
+    "impacted_elements": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "evidence": {"type": "string", "minLength": 1},
+    "reviewer": {"type": "string", "minLength": 1},
+    "human_approval": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "risk_level": {"const": "high"},
+          "verdict": {"enum": ["no-semantic-change", "aligned-domain-change"]}
+        },
+        "required": ["risk_level", "verdict"]
+      },
+      "then": {"properties": {"human_approval": {"minLength": 1}}}
+    }
+  ]
+}

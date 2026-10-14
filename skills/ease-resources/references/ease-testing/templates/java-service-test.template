@@ -1,0 +1,61 @@
+package {{package_name}};
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class {{class_name}}Test {
+
+    private {{class_name}} {{instance_name}};
+
+    {{#dependencies}}
+    @Mock
+    private {{type}} {{name}};
+
+    {{/dependencies}}
+
+    @BeforeEach
+    void setUp() {
+        {{instance_name}} = new {{class_name}}(
+            {{#dependencies}}
+            {{name}}{{^last}},{{/last}}
+            {{/dependencies}}
+        );
+    }
+
+    {{#methods}}
+    @Test
+    void {{method_name}}_{{scenario}}_{{expected_result}}() {
+        // Given
+        {{#setup}}
+        {{{setup}}}
+        {{/setup}}
+
+        // When
+        {{#is_void}}
+        {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}});
+        {{/is_void}}
+        {{^is_void}}
+        {{return_type}} result = {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}});
+        {{/is_void}}
+
+        // Then
+        {{#assertions}}
+        {{{assertion}}}
+        {{/assertions}}
+
+        {{#verifications}}
+        {{{verification}}}
+        {{/verifications}}
+    }
+
+    {{/methods}}
+}

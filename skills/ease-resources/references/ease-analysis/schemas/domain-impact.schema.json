@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ease.local/schemas/domain-impact.schema.json",
+  "title": "Ease TRD Domain Impact Decision",
+  "type": "object",
+  "required": ["schema_version", "feature_name", "impact", "signals", "rationale"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "feature_name": {"type": "string", "pattern": "^[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "impact": {"enum": ["none", "potential", "confirmed"]},
+    "signals": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "rationale": {"type": "string", "minLength": 1}
+  }
+}

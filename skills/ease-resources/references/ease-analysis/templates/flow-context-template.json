@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "change_id": "042-user-registration",
+  "domain_id": "001-user-management",
+  "track": "brd",
+  "requirement_source": "docs/brds/user-registration.md",
+  "git": {
+    "branch": "feature/042-user-registration",
+    "worktree_path": "/absolute/path/to/worktree",
+    "worktree_policy": "auto",
+    "isolation_status": "active"
+  }
+}

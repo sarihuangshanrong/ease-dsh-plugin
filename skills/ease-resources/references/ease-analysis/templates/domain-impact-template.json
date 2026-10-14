@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "feature_name": "[FEATURE_NAME]",
+  "impact": "none",
+  "signals": [],
+  "rationale": "[Evidence that this TRD does or does not alter business semantics.]"
+}

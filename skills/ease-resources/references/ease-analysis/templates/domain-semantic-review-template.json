@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "feature_name": "[FEATURE_NAME]",
+  "base_commit": "[BASE_COMMIT]",
+  "head_commit": "[HEAD_COMMIT]",
+  "verdict": "no-semantic-change",
+  "risk_level": "low",
+  "impacted_elements": ["UC-001", "BR-001-rule-name"],
+  "evidence": "[Tests, diff evidence and reasoning supporting the verdict.]",
+  "reviewer": "[human-or-agent-reviewer]",
+  "human_approval": "[required when risk_level=high; otherwise empty]"
+}

@@ -1,0 +1,104 @@
+package {{package_name}}
+
+import (
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
+
+{{#has_mock_dependencies}}
+// Mock结构体定义
+{{#dependencies}}
+type Mock{{type}} struct {
+	mock.Mock
+}
+
+{{/dependencies}}
+
+{{#dependencies}}
+func (m *Mock{{type}}) {{method_signature}} {
+	args := m.Called({{method_params}})
+	{{#has_return}}return args.{{return_type}}{{/has_return}}
+}
+
+{{/dependencies}}
+{{/has_mock_dependencies}}
+
+func Test{{struct_name}}_{{method_name}}(t *testing.T) {
+	// Given
+	{{#setup}}
+	{{{setup}}}
+	{{/setup}}
+
+	// When
+	{{#is_void}}
+	{{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+	{{/is_void}}
+	{{^is_void}}
+	result := {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+	{{/is_void}}
+
+	// Then
+	{{#assertions}}
+	{{{assertion}}}
+	{{/assertions}}
+
+	{{#verifications}}
+	{{{verification}}}
+	{{/verifications}}
+}
+
+{{#table_driven_tests}}
+func Test{{struct_name}}_{{method_name}}_TableDriven(t *testing.T) {
+	tests := []struct {
+		name     string
+		{{#test_params}}
+		{{param_name}} {{param_type}}
+		{{/test_params}}
+		expected {{expected_type}}
+		wantErr  bool
+	}{
+		{
+			name: "{{test_case_name}}",
+			{{#test_values}}
+			{{param_name}}: {{param_value}},
+			{{/test_values}}
+			expected: {{expected_value}},
+			wantErr:  {{want_error}},
+		},
+		// 添加更多测试用例
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Given
+			{{#setup}}
+			{{{setup}}}
+			{{/setup}}
+
+			// When
+			{{#is_void}}
+			err := {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+			{{/is_void}}
+			{{^is_void}}
+			result, err := {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}})
+			{{/is_void}}
+
+			// Then
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+
+			assert.NoError(t, err)
+			{{^is_void}}
+			assert.Equal(t, tt.expected, result)
+			{{/is_void}}
+
+			{{#verifications}}
+			{{{verification}}}
+			{{/verifications}}
+		})
+	}
+}
+{{/table_driven_tests}}

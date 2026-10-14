@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "feature_name": "[FEATURE_NAME]",
+  "baseline": {
+    "status": "analyzed",
+    "commit_id": "[GIT_HEAD_OR_WORKTREE]"
+  },
+  "elements": [
+    {
+      "id": "UC-001",
+      "kind": "usecase",
+      "status": "active",
+      "delta": "NEW",
+      "source_refs": ["[REQUIREMENT_SOURCE#SECTION]"],
+      "decision_required": false,
+      "decision_refs": []
+    },
+    {
+      "id": "BR-001-rule-name",
+      "kind": "business-rule",
+      "status": "active",
+      "delta": "NEW",
+      "source_refs": ["[REQUIREMENT_SOURCE#SECTION]"],
+      "decision_required": false,
+      "decision_refs": []
+    }
+  ],
+  "drift_status": {
+    "status": "clean",
+    "unresolved": []
+  }
+}

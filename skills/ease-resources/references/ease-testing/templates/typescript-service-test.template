@@ -1,0 +1,117 @@
+import { {{class_name}} } from '../{{file_path}}';
+{{#module_imports}}
+import { {{imported_class}} } from '../{{import_path}}';
+{{/module_imports}}
+
+{{#has_mock_dependencies}}
+// Mock类型定义
+{{#dependencies}}
+const mock{{type}} = {
+{{#methods}}
+  {{method_name}}: jest.fn(),
+{{/methods}}
+};
+{{/dependencies}}
+{{/has_mock_dependencies}}
+
+describe('{{class_name}}', () => {
+  let {{instance_name}}: {{class_name}};
+  {{#dependencies}}
+  let mock{{type}}: jest.Mocked<{{type}}>;
+  {{/dependencies}}
+
+  beforeEach(() => {
+    {{#dependencies}}
+    mock{{type}} = { ...mock{{type}} } as jest.Mocked<{{type}}>;
+    {{/dependencies}}
+
+    {{instance_name}} = new {{class_name}}(
+      {{#dependencies}}
+      mock{{type}}{{^last}},{{/last}}
+      {{/dependencies}}
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  {{#methods}}
+  describe('{{method_name}}', () => {
+    it('should {{scenario_description}}', () => {
+      // Given
+      {{#setup}}
+      {{{setup}}}
+      {{/setup}}
+
+      // When
+      {{#is_async}}
+      const resultPromise = {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}});
+      {{/is_async}}
+      {{^is_async}}
+      {{#is_void}}
+      {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}});
+      {{/is_void}}
+      {{^is_void}}
+      const result = {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}});
+      {{/is_void}}
+      {{/is_async}}
+
+      // Then
+      {{#assertions}}
+      {{{assertion}}}
+      {{/assertions}}
+
+      {{#verifications}}
+      {{{verification}}}
+      {{/verifications}}
+    });
+
+    {{#error_case}}
+    it('should throw error when {{error_condition}}', () => {
+      // Given
+      {{#error_setup}}
+      {{{setup}}}
+      {{/error_setup}}
+
+      // When & Then
+      {{#is_async}}
+      expect({{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}}))
+        .rejects.toThrow({{expected_error}});
+      {{/is_async}}
+      {{^is_async}}
+      expect(() => {{instance_name}}.{{method_name}}({{#params}}{{param_name}}{{^last}}, {{/last}}{{/params}}))
+        .toThrow({{expected_error}});
+      {{/is_async}}
+    });
+    {{/error_case}}
+  });
+
+  {{/methods}}
+
+  {{#parametrized_tests}}
+  describe('{{method_name}}', () => {
+    test.each([
+      [{{test_params}}],
+    ])('should {{test_description}}', ({{param_names}}) => {
+      // Given
+      {{#setup}}
+      {{{setup}}}
+      {{/setup}}
+
+      // When
+      {{#is_void}}
+      {{instance_name}}.{{method_name}}({{param_names}});
+      {{/is_void}}
+      {{^is_void}}
+      const result = {{instance_name}}.{{method_name}}({{param_names}});
+      {{/is_void}}
+
+      // Then
+      {{#assertions}}
+      {{{assertion}}}
+      {{/assertions}}
+    });
+  });
+  {{/parametrized_tests}}
+});

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "entries": [
+    {
+      "element_id": "UC-001",
+      "code_refs": ["src/example/ExampleService.java"],
+      "test_refs": ["src/test/example/ExampleServiceTest.java"]
+    },
+    {
+      "element_id": "BR-001-rule-name",
+      "code_refs": ["src/example/ExampleService.java"],
+      "test_refs": ["src/test/example/ExampleServiceTest.java"]
+    }
+  ]
+}

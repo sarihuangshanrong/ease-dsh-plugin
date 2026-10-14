@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ease.local/schemas/flow-context.schema.json",
+  "title": "Ease Flow Context",
+  "type": "object",
+  "required": ["schema_version", "change_id", "domain_id", "track", "requirement_source"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "change_id": {"type": "string", "pattern": "^[0-9]{3,14}-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "domain_id": {
+      "oneOf": [
+        {"type": "string", "pattern": "^[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        {"type": "null"}
+      ]
+    },
+    "track": {"enum": ["brd", "trd"]},
+    "requirement_source": {"type": "string", "minLength": 1},
+    "git": {
+      "type": "object",
+      "required": ["branch", "worktree_path", "worktree_policy", "isolation_status"],
+      "additionalProperties": false,
+      "properties": {
+        "branch": {"type": "string", "minLength": 1},
+        "worktree_path": {"type": "string", "minLength": 1},
+        "worktree_policy": {"enum": ["auto", "required", "reuse", "off"]},
+        "isolation_status": {"enum": ["active", "waived"]}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"track": {"const": "brd"}}, "required": ["track"]},
+      "then": {"properties": {"domain_id": {"type": "string"}}}
+    },
+    {
+      "if": {"properties": {"track": {"const": "trd"}}, "required": ["track"]},
+      "then": {"properties": {"domain_id": {"type": "null"}}}
+    }
+  ]
+}

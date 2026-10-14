@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ease.local/schemas/domain-alignment.schema.json",
+  "title": "Ease Domain Alignment Manifest",
+  "type": "object",
+  "required": ["schema_version", "feature_name", "baseline", "elements", "drift_status"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "feature_name": {"type": "string", "pattern": "^[0-9]{3}-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "baseline": {
+      "type": "object",
+      "required": ["status", "commit_id"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"enum": ["legacy-unverified", "analyzed", "designed", "verified"]},
+        "commit_id": {"type": "string"}
+      }
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "status", "delta", "source_refs"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {"enum": ["usecase", "business-rule"]},
+          "status": {"enum": ["active", "deprecated", "superseded"]},
+          "delta": {"enum": ["NEW", "MOD", "UNCHANGED", "NONE"]},
+          "source_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "decision_required": {"type": "boolean"},
+          "decision_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    },
+    "drift_status": {
+      "type": "object",
+      "required": ["status", "unresolved"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"enum": ["clean", "warning", "blocking"]},
+        "unresolved": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  }
+}

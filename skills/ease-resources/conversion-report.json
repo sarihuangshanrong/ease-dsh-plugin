@@ -1,0 +1,167 @@
+[
+  {
+    "file": "commands/analyze-code.md",
+    "line": 25,
+    "text": ">     使用 Skill 工具调用 \"ease:async-task\"，参数为 \"$ORIGINAL_COMMAND\""
+  },
+  {
+    "file": "commands/arch-docs.md",
+    "line": 24,
+    "text": ">     使用 Skill 工具调用 \"ease:async-task\"，参数为 \"$ORIGINAL_COMMAND\""
+  },
+  {
+    "file": "commands/flow-2-design.md",
+    "line": 35,
+    "text": "5. 调用 `ease:async-task` 技能"
+  },
+  {
+    "file": "commands/flow-2-design.md",
+    "line": 53,
+    "text": "- 未提交或未推送上述产物时，必须暂停，不得调用 `ease:async-task`"
+  },
+  {
+    "file": "commands/flow-2-design.md",
+    "line": 74,
+    "text": "/ease:async-task $TASK_DESC"
+  },
+  {
+    "file": "commands/flow-3-implement.md",
+    "line": 26,
+    "text": "5. 调用 `ease:async-task` 技能"
+  },
+  {
+    "file": "commands/flow-3-implement.md",
+    "line": 48,
+    "text": "- 未提交或未推送前置产物时，必须暂停，不得调用 `ease:async-task`"
+  },
+  {
+    "file": "commands/flow-3-implement.md",
+    "line": 69,
+    "text": "/ease:async-task $TASK_DESC"
+  },
+  {
+    "file": "commands/flow-3-implement.md",
+    "line": 760,
+    "text": "- **集成测试场景另行处理**：资源层 PREFER 真实/容器化依赖（TestContainers），通过 `/ease-tools:generate-tests --integration` 进入 `ease-testing` 权威流程。不要在单元测试里拉起真实 DB。"
+  },
+  {
+    "file": "commands/flow-3-implement.md",
+    "line": 851,
+    "text": "> ⚠️ **多次修复仍失败时**：如果尝试 2-3 次修复仍无法解决问题，**停止盲目尝试**，调用 `systematic-debugging` 技能进行系统性调试（参考 `plugins/ease-tools/skills/systematic-debugging/SKILL.md`）。"
+  },
+  {
+    "file": "commands/flow-3-implement.md",
+    "line": 1482,
+    "text": "参考: plugins/ease-tools/skills/systematic-debugging/SKILL.md"
+  },
+  {
+    "file": "commands/starter.md",
+    "line": 19,
+    "text": "3. 调用 `ease:async-task` 技能"
+  },
+  {
+    "file": "commands/starter.md",
+    "line": 36,
+    "text": "/ease:async-task $TASK_DESC"
+  },
+  {
+    "file": "commands/starter.md",
+    "line": 308,
+    "text": "/ease-tools:git-commit        # 生成符合规范的提交信息"
+  },
+  {
+    "file": "commands/starter.md",
+    "line": 309,
+    "text": "/ease-tools:code-review       # 代码质量审查"
+  },
+  {
+    "file": "commands/starter.md",
+    "line": 310,
+    "text": "/ease-tools:git-branch-sync   # 同步分支到 develop / main(master)"
+  },
+  {
+    "file": "references/ease-analysis/references/domain-alignment-ci.md",
+    "line": 21,
+    "text": "本地 `/ease-tools:git-commit` 使用 `detect_domain_drift.py --policy warn`。它报告需要语义审查的领域实现变化，但不改变该命令“一键 commit + push”的既有授权语义。"
+  },
+  {
+    "file": "references/ease-architecture/SKILL.md",
+    "line": 22,
+    "text": "- `/ease-tools:architecture-review [@ease]--async 评估系统设计`"
+  },
+  {
+    "file": "references/ease-architecture/SKILL.md",
+    "line": 37,
+    "text": "1. 将完整的用户输入（如 `/ease-tools:architecture-review [@ease]--async 评审架构`）作为任务描述"
+  },
+  {
+    "file": "references/ease-architecture/SKILL.md",
+    "line": 177,
+    "text": "- `ease-poc/SKILL.md` - Validates technical decisions"
+  },
+  {
+    "file": "references/ease-coding/SKILL.md",
+    "line": 46,
+    "text": "| 代码审查（/ease-tools:code-review） | 识别语言/框架；追踪至少 1 条调用链 | `references/coding-<lang>.md` |"
+  },
+  {
+    "file": "references/ease-coding/SKILL.md",
+    "line": 170,
+    "text": "- `ease-poc/SKILL.md` - Validates technical approaches"
+  },
+  {
+    "file": "references/ease-coding/templates/implementation-summary-template.md",
+    "line": 78,
+    "text": "- 建议使用 `/ease-tools:code-review` 命令进行代码审查"
+  },
+  {
+    "file": "references/ease-spec/SKILL.md",
+    "line": 15,
+    "text": "- For /ease-tools:architecture-review, /ease-tools:code-review, /ease-tools:generate-tests, /ease-tools:gitflow (these don't invoke ease-spec)"
+  },
+  {
+    "file": "references/ease-spec/SKILL.md",
+    "line": 233,
+    "text": "- `ease-poc/SKILL.md` - For technical feasibility validation before spec"
+  },
+  {
+    "file": "references/ease-spec/reference/stage-contract.md",
+    "line": 167,
+    "text": "本节适用于 `plugins/ease/` 下所有 skill、command 及其直接调用的脚本。凡 Ease 主动创建、仅服务于执行过程且不属于最终交付物的文件或目录，包括分析草稿、中间转换文件、评审暂存件、下载/解压目录、缓存、备份和原子替换文件，均视为 **Ease 临时产物**。"
+  },
+  {
+    "file": "references/ease-testing/SKILL.md",
+    "line": 38,
+    "text": "| Write integration tests | Verify local dependencies available | `/ease-tools:generate-tests` (--integration/--all) |"
+  },
+  {
+    "file": "references/ease-testing/SKILL.md",
+    "line": 190,
+    "text": "- `/ease-tools:generate-tests` - Command interface with --unit/--integration/--all flags"
+  },
+  {
+    "file": "references/ease-testing/flows/generate-test-code.md",
+    "line": 43,
+    "text": "- `测试层次 = 集成` 的案例 → 标注为集成测试（用真实/容器化依赖），按 `/ease-tools:generate-tests --integration` 处理"
+  },
+  {
+    "file": "references/test-driven-development/SKILL.md",
+    "line": 472,
+    "text": "| Bug 定位与复现 | `systematic-debugging`（ease-tools） | 需要根因分析/最小复现 | 参考 `plugins/ease-tools/skills/systematic-debugging/SKILL.md` |"
+  },
+  {
+    "file": "references/test-driven-development/SKILL.md",
+    "line": 473,
+    "text": "| 变更提交 | `git-commit`（ease-tools） | 需要生成高质量提交信息 | 参考 `plugins/ease-tools/skills/git-commit/SKILL.md` |"
+  },
+  {
+    "file": "runtime.md",
+    "line": 41,
+    "text": "不调用 ease:async-task、不静默改为同步。普通文档中的 async 字样不是请求。"
+  },
+  {
+    "file": "runtime.md",
+    "line": 46,
+    "text": "- ease-tools、ease-poc、历史 contracts-unified/schemas 等未提供的引用不代表"
+  }
+]
