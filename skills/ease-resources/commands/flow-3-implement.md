@@ -848,7 +848,7 @@ mvn test -Dtest=UserServiceTest
 **测试失败？** 修代码，不要改测试。
 **其他测试失败？** 立刻修，别拖。
 
-> ⚠️ **多次修复仍失败时**：如果尝试 2-3 次修复仍无法解决问题，**停止盲目尝试**，调用 `systematic-debugging` 技能进行系统性调试（参考 `plugins/ease-tools/skills/systematic-debugging/SKILL.md`）。
+> ⚠️ **多次修复仍失败时**：如果尝试 2-3 次修复仍无法解决问题，**停止盲目尝试**，调用 `systematic-debugging` 技能进行系统性调试（参考 `references/systematic-debugging/SKILL.md`）。
 
 ##### 5.2.5 REFACTOR 阶段 - 清理重构
 
@@ -1479,7 +1479,7 @@ TRD：返回 /ease:flow-1-analyze-trd，补齐 TRD.md / artifacts/solution-desig
 - Phase 3: 假设与实验（形成假设、最小化验证）
 - Phase 4: 最小修复（只修复根因，验证后完成）
 
-参考: plugins/ease-tools/skills/systematic-debugging/SKILL.md
+参考: references/systematic-debugging/SKILL.md
 ```
 
 **铁律**：没有根本原因调查就没有修复。禁止在不理解问题的情况下继续尝试"碰运气"的修复。

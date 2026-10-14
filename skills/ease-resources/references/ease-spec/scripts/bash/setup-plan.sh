@@ -42,6 +42,7 @@ mkdir -p "$FEATURE_DIR"
 
 # Copy plan template if it exists
 TEMPLATE="$REPO_ROOT/.specify/templates/plan-template.md"
+[[ -f "$TEMPLATE" ]] || TEMPLATE="$SCRIPT_DIR/../../templates/plan-template.md"
 if [[ -f "$TEMPLATE" ]]; then
     cp "$TEMPLATE" "$IMPL_PLAN"
     echo "Copied plan template to $IMPL_PLAN"

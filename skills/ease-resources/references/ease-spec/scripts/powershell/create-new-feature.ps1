@@ -183,7 +183,7 @@ function ConvertTo-CleanBranchName {
     
     return $Name.ToLower() -replace '[^a-z0-9]', '-' -replace '-{2,}', '-' -replace '^-', '' -replace '-$', ''
 }
-$fallbackRoot = (Find-RepositoryRoot -StartDir $PSScriptRoot)
+$fallbackRoot = (Get-Location).Path
 if (-not $fallbackRoot) {
     Write-Error "Error: Could not determine repository root. Please run this script from within the repository."
     exit 1
@@ -220,6 +220,7 @@ if ($FeatureDir) {
 
     $specFile = Join-Path $featureDir 'spec.md'
     $template = Join-Path $repoRoot '.specify/templates/spec-template.md'
+if (-not (Test-Path $template)) { $template = Join-Path $PSScriptRoot '../../templates/spec-template.md' }
     if (-not (Test-Path $specFile)) {
         if (Test-Path $template) { Copy-Item $template $specFile -Force } else { New-Item -ItemType File -Path $specFile | Out-Null }
     }
@@ -341,6 +342,7 @@ $featureDir = Join-Path $easesDir $branchName
 New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
 $template = Join-Path $repoRoot '.ease/templates/spec-template.md'
+if (-not (Test-Path $template)) { $template = Join-Path $PSScriptRoot '../../templates/spec-template.md' }
 $specFile = Join-Path $featureDir 'spec.md'
 if (Test-Path $template) { 
     Copy-Item $template $specFile -Force 

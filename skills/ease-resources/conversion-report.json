@@ -45,16 +45,6 @@
     "text": "- **集成测试场景另行处理**：资源层 PREFER 真实/容器化依赖（TestContainers），通过 `/ease-tools:generate-tests --integration` 进入 `ease-testing` 权威流程。不要在单元测试里拉起真实 DB。"
   },
   {
-    "file": "commands/flow-3-implement.md",
-    "line": 851,
-    "text": "> ⚠️ **多次修复仍失败时**：如果尝试 2-3 次修复仍无法解决问题，**停止盲目尝试**，调用 `systematic-debugging` 技能进行系统性调试（参考 `plugins/ease-tools/skills/systematic-debugging/SKILL.md`）。"
-  },
-  {
-    "file": "commands/flow-3-implement.md",
-    "line": 1482,
-    "text": "参考: plugins/ease-tools/skills/systematic-debugging/SKILL.md"
-  },
-  {
     "file": "commands/starter.md",
     "line": 19,
     "text": "3. 调用 `ease:async-task` 技能"
@@ -115,6 +105,31 @@
     "text": "- 建议使用 `/ease-tools:code-review` 命令进行代码审查"
   },
   {
+    "file": "references/ease-poc/SKILL.md",
+    "line": 68,
+    "text": "\"Use ease-poc\" [shape=ellipse, style=filled, fillcolor=lightblue];"
+  },
+  {
+    "file": "references/ease-poc/SKILL.md",
+    "line": 75,
+    "text": "\"≤ 30 min trial?\" → \"Use ease-poc\" [label=\"Yes\"];"
+  },
+  {
+    "file": "references/ease-poc/SKILL.md",
+    "line": 140,
+    "text": "### From ease-poc to Three-Phase Flow"
+  },
+  {
+    "file": "references/ease-poc/SKILL.md",
+    "line": 151,
+    "text": "### From ease-architecture to ease-poc"
+  },
+  {
+    "file": "references/ease-poc/SKILL.md",
+    "line": 153,
+    "text": "架构评审中需要实证支撑的决策，应委托给 ease-poc："
+  },
+  {
     "file": "references/ease-spec/SKILL.md",
     "line": 15,
     "text": "- For /ease-tools:architecture-review, /ease-tools:code-review, /ease-tools:generate-tests, /ease-tools:gitflow (these don't invoke ease-spec)"
@@ -145,9 +160,19 @@
     "text": "- `测试层次 = 集成` 的案例 → 标注为集成测试（用真实/容器化依赖），按 `/ease-tools:generate-tests --integration` 处理"
   },
   {
-    "file": "references/test-driven-development/SKILL.md",
-    "line": 472,
-    "text": "| Bug 定位与复现 | `systematic-debugging`（ease-tools） | 需要根因分析/最小复现 | 参考 `plugins/ease-tools/skills/systematic-debugging/SKILL.md` |"
+    "file": "references/systematic-debugging/SKILL.md",
+    "line": 13,
+    "text": "- `/ease-tools:debug [@ease]--async 分析测试失败原因`"
+  },
+  {
+    "file": "references/systematic-debugging/SKILL.md",
+    "line": 28,
+    "text": "1. 将完整的用户输入（如 `/ease-tools:debug [@ease]--async 调试问题`）作为任务描述"
+  },
+  {
+    "file": "references/systematic-debugging/SKILL.md",
+    "line": 59,
+    "text": "- 需要大规模设计决策/架构重构 → 先走架构评审（建议 `/ease-tools:architecture-review`）"
   },
   {
     "file": "references/test-driven-development/SKILL.md",
@@ -156,12 +181,12 @@
   },
   {
     "file": "runtime.md",
-    "line": 41,
+    "line": 42,
     "text": "不调用 ease:async-task、不静默改为同步。普通文档中的 async 字样不是请求。"
   },
   {
     "file": "runtime.md",
-    "line": 46,
-    "text": "- ease-tools、ease-poc、历史 contracts-unified/schemas 等未提供的引用不代表"
+    "line": 49,
+    "text": "技术可行性验证使用 `references/ease-poc/SKILL.md`。调试文档中的"
   }
 ]

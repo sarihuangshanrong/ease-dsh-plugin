@@ -163,6 +163,7 @@ print_info "检测到功能: ${FEATURE_NUM}-${FEATURE_NAME}"
 check_ease_spec() {
     # 查找 ease-spec 技能目录
     local skill_dirs=(
+        "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
         "plugins/ease/skills/ease-spec"
         ".ease/skills/ease-spec"
         "skills/ease-spec"

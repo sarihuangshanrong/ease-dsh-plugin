@@ -192,7 +192,7 @@ if git rev-parse --show-toplevel >/dev/null 2>&1; then
     REPO_ROOT=$(git rev-parse --show-toplevel)
     HAS_GIT=true
 else
-    REPO_ROOT="$(find_repo_root "$SCRIPT_DIR")"
+    REPO_ROOT="$(pwd -P)"
     if [ -z "$REPO_ROOT" ]; then
         echo "Error: Could not determine repository root. Please run this script from within the repository." >&2
         exit 1
@@ -224,6 +224,7 @@ if [ -n "$FEATURE_DIR_ARG" ]; then
 
     SPEC_FILE="$FEATURE_DIR/spec.md"
     TEMPLATE="$REPO_ROOT/.specify/templates/spec-template.md"
+[[ -f "$TEMPLATE" ]] || TEMPLATE="$SCRIPT_DIR/../../templates/spec-template.md"
     if [ ! -f "$SPEC_FILE" ]; then
         if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
     fi
@@ -347,6 +348,7 @@ FEATURE_DIR="$eases_DIR/$BRANCH_NAME"
 mkdir -p "$FEATURE_DIR"
 
 TEMPLATE="$REPO_ROOT/.specify/templates/spec-template.md"
+[[ -f "$TEMPLATE" ]] || TEMPLATE="$SCRIPT_DIR/../../templates/spec-template.md"
 SPEC_FILE="$FEATURE_DIR/spec.md"
 if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
 

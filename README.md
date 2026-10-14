@@ -54,7 +54,7 @@ scripts/prepare-runtime.mjs       生成 profile overlay
 skills/ease-starter/SKILL.md       原生合法技能入口
 skills/ease-flow-*/SKILL.md        四个阶段入口
 skills/ease-*/SKILL.md             四个预处理入口
-skills/ease-resources/            全部入口共用的命令、14 个领域资料与模板
+skills/ease-resources/            全部入口共用的命令、16 个领域资料与模板
 skills/ease-manifest.json         命令映射和转换清单
 ```
 
@@ -84,20 +84,22 @@ ZIP 包含运行适配器、入口、资源与安装脚本，解压后运行 `pr
 ## 验证
 
 ```bash
+python3 scripts/audit_alignment.py --src ../ease-cc-plugins
 python3 -m unittest discover -s tests -v
 node scripts/prepare-runtime.mjs
 node tests/runtime-smoke.mjs
 ```
 
 测试覆盖重复转换、缺失输入保留旧产物、安装更新、嵌套 frontmatter 清理、模板路径、
-真实 DSH 技能发现及 Cordis pre-step 冒号调用。运行时测试需要已安装 DSH；
+真实 DSH 技能发现及 Cordis pre-step 冒号调用。另验证源文件完整性、缺失门禁检测、
+非 Git 业务目录与模板回退。完整审计说明见 [ALIGNMENT.md](ALIGNMENT.md)。运行时测试需要已安装 DSH；
 可通过 `EASE_DSH_MODULE_ROOT` 指定含 node_modules 的目录。
 
 ## 当前边界
 
 - `--async` 云端适配未迁移；命令必须报告不支持并停止，不得静默改为同步。
 - `--worktree` 保留源合同和脚本；尚未在 DSH 中做业务需求到代码的完整实测。
-- 源库仍有 ease-tools、ease-poc、历史 contracts/schemas 等外部或失效引用。
+- 源库仍有 尚未迁移的 ease-tools、历史 contracts/schemas 等外部或失效引用。
   见 `skills/ease-resources/conversion-report.json`，不可把缺失资源算作门禁通过。
 - Claude 的工具授权、model、scripts、handoffs 不作为 DSH 元数据执行。
 - 验证基线：本机 DSH CLI `0.1.1-rc.2`；测试不调用付费模型、不修改业务仓库。

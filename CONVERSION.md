@@ -21,13 +21,14 @@ DSH 不将它注册为命令；只发现九个入口。这是多入口、共享�
 
 - 命令 frontmatter 完整剥离，description 用于入口，argument-hint 和 skills
   依赖变成正文信息。必需依赖缺失则转换失败。handoffs 不作为原生能力保留。
-- 内化 14 个领域目录，保留脚本及可执行权限，领域 SKILL.md 的 frontmatter
+- 内化 16 个领域目录，保留脚本及可执行权限，领域 SKILL.md 的 frontmatter
   整块删除，防止删除顶层键后遗留嵌套 YAML。
 - 明确的 `plugins/ease/skills/` → `references/`、`plugins/ease/templates/`
   → `templates/`、`plugins/ease/commands/` → `commands/`，相对资源根。
 - 不再全局替换裸 `templates/`：它常指 ease-testing 或 ease-spec 自己的模板，
   原转换器会误指向共享模板。正文中的局部路径按运行约定解释。
-- 源脚本保持原样，不盲改内部路径。执行前需检查其工作目录假设。
+- 源脚本通过 script_adapters.py 做有限安装位置适配：非 Git 项目根、模板回退、
+  auto-integrate 自定位。所有替换检查预期匹配数，上游变化时中止并要求重新核查。
 - 外部引用保留并输出 occurrence 报告；报告不等于完整 Markdown 链接检查。
 - 命令与参考正文中的 Claude 专属行为由 `entry/runtime.md` 明确降级；
   历史源文字保留便于跟进上游，不能把原样复制视为语义等价迁移。
@@ -57,5 +58,5 @@ Ease 源基线 `dd6e874ef3ea29ebb9d45eccfcf61fdc2ebc6d7e`，读取本地工作�
 ## 未宣称完成的验证
 
 没有调用模型执行一轮 BRD/TRD 业务开发，没有做 Windows PowerShell 执行验证、
-Web UI 自动补全适配、云端异步提交或 Skills API 托管上传。33 处外部引用是当前
+Web UI 自动补全适配、云端异步提交或 Skills API 托管上传。38 处外部引用是当前
 快照的 occurrence 数，重新转换时可能变化。

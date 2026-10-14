@@ -3,12 +3,16 @@
 from __future__ import annotations
 import argparse
 import json
+import hashlib
+import sys
 import re
 import shutil
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / 'scripts'))
+from script_adapters import adapt_script
 COMMANDS = ('starter', 'flow-1-analyze-brd', 'flow-1-analyze-trd',
             'flow-2-design', 'flow-3-implement', 'constitution',
             'bootstrap-system', 'analyze-code', 'arch-docs')
@@ -18,6 +22,11 @@ SKILLS = ('ease-analysis', 'ease-spec', 'ease-test-case-design',
           'ease-coding', 'ease-code-review', 'ease-qa',
           'ease-arch-documentation', 'test-driven-development')
 
+EXTRA_SKILLS = ('systematic-debugging', 'ease-poc')
+
+def source_skills(src):
+    return {**{s: src / 'plugins/ease/skills' / s for s in SKILLS},
+            **{s: src / 'plugins/ease-tools/skills' / s for s in EXTRA_SKILLS}}
 
 def split_frontmatter(text):
     match = re.match(r'\A---\r?\n(.*?)\r?\n---(?:\r?\n|$)', text, re.S)
@@ -30,6 +39,8 @@ def split_frontmatter(text):
 def rewrite_paths(text):
     # Only explicit repository paths: local templates/ and references/ retain
     # their document-relative meaning. Never globally rewrite bare templates/.
+    for skill in EXTRA_SKILLS:
+        text = text.replace(f'plugins/ease-tools/skills/{skill}/', f'references/{skill}/')
     text = text.replace('plugins/ease/skills/', 'references/')
     text = text.replace('plugins/ease/templates/', 'templates/')
     text = text.replace('plugins/ease/commands/', 'commands/')
@@ -40,7 +51,8 @@ def rewrite_paths(text):
 def build(src, out):
     plugin = src / 'plugins/ease'
     required = [plugin / 'commands' / f'{cmd}.md' for cmd in COMMANDS]
-    required += [plugin / 'skills' / skill / 'SKILL.md' for skill in SKILLS]
+    sources = source_skills(src)
+    required += [path / 'SKILL.md' for path in sources.values()]
     required += [plugin / 'templates', ROOT / 'entry/runtime.md']
     for path in required:
         if not path.exists():
@@ -53,8 +65,8 @@ def build(src, out):
         resources = stage / 'ease-resources'
         resources.mkdir()
         shutil.copy(ROOT / 'entry/runtime.md', resources / 'runtime.md')
-        for skill in SKILLS:
-            shutil.copytree(plugin / 'skills' / skill, resources / 'references' / skill,
+        for skill, source in sources.items():
+            shutil.copytree(source, resources / 'references' / skill,
                             ignore=shutil.ignore_patterns('__pycache__', '*.pyc', '.DS_Store', 'node_modules'))
         shutil.copytree(plugin / 'templates', resources / 'templates')
         for path in resources.rglob('*.md'):
@@ -64,6 +76,9 @@ def build(src, out):
                 # YAML block, including nested handoffs/tools, not just key lines.
                 _, text = split_frontmatter(text)
             path.write_text(rewrite_paths(text))
+        for path in (resources / 'references').rglob('*'):
+            if path.suffix in ('.sh', '.ps1'):
+                path.write_text(adapt_script(str(path.relative_to(resources / 'references')), path.read_text()))
         (resources / 'commands').mkdir()
         for cmd in COMMANDS:
             fm, body = split_frontmatter((plugin / 'commands' / f'{cmd}.md').read_text())
@@ -93,10 +108,23 @@ user-invocable: true
 先读取本技能目录的 `../ease-resources/runtime.md`，再读取
 `../ease-resources/commands/{cmd}.md`，执行其中完整流程。
 资源根为本技能目录的 `../ease-resources/`；所有 commands/、references/、templates/
-绝对定位到该资源根。用户项目路径始终相对当前项目工作目录。
+前缀的定位按 runtime.md 执行；领域内局部模板相对该领域目录，不能一律指向资源根。
+用户项目路径始终相对当前项目工作目录。
 从用户消息中取得 `/ease:{cmd}`（或 `/ease-{cmd}`）之后的参数。
 '''
             (target / 'SKILL.md').write_text(entry)
+        provenance = {}
+        for name, source in sources.items():
+            for path in sorted(source.rglob('*')):
+                if path.is_file() and not any(x in path.parts for x in ('node_modules', '__pycache__')) and path.name != '.DS_Store' and path.suffix != '.pyc':
+                    provenance[str(path.relative_to(src))] = hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted((plugin / 'templates').rglob('*')):
+            if path.is_file():
+                provenance[str(path.relative_to(src))] = hashlib.sha256(path.read_bytes()).hexdigest()
+        for cmd in COMMANDS:
+            path = plugin / 'commands' / f'{cmd}.md'
+            provenance[str(path.relative_to(src))] = hashlib.sha256(path.read_bytes()).hexdigest()
+        (resources / 'source-manifest.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2) + '\n')
         report = []
         for path in sorted(resources.rglob('*.md')):
             for n, line in enumerate(path.read_text().splitlines(), 1):
@@ -105,7 +133,7 @@ user-invocable: true
         (resources / 'conversion-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
         (stage / 'ease-manifest.json').write_text(json.dumps({
             'commands': {f'ease:{cmd}': f'ease-{cmd}' for cmd in COMMANDS},
-            'resources': 'ease-resources', 'skills': list(SKILLS),
+            'resources': 'ease-resources', 'skills': list(sources),
             'external_reference_occurrences': len(report),
         }, ensure_ascii=False, indent=2) + '\n')
         for path in sorted(stage.iterdir()):
@@ -132,7 +160,7 @@ def main():
         unresolved = build(args.src, args.out)
     except (OSError, ValueError) as exc:
         parser.exit(1, f'error: {exc}\n')
-    print(f'Converted {len(COMMANDS)} commands, {len(SKILLS)} domain references; {unresolved} external-reference occurrences recorded.')
+    print(f'Converted {len(COMMANDS)} commands, {len(SKILLS) + len(EXTRA_SKILLS)} domain references; {unresolved} external-reference occurrences recorded.')
 
 if __name__ == '__main__':
     main()

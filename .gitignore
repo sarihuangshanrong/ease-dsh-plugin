@@ -1,4 +1,26 @@
-.runtime/
-dist/
+# Generated machine-specific DSH overlay and release archives
+/.runtime/
+/dist/
+
+# Python and Node.js caches/dependencies
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+node_modules/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local DSH installation and editor/OS files
+/.dsh/
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local logs
+*.log

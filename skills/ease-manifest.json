@@ -25,7 +25,9 @@
     "ease-code-review",
     "ease-qa",
     "ease-arch-documentation",
-    "test-driven-development"
+    "test-driven-development",
+    "systematic-debugging",
+    "ease-poc"
   ],
-  "external_reference_occurrences": 33
+  "external_reference_occurrences": 38
 }

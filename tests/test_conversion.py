@@ -69,5 +69,42 @@ class ConversionTests(unittest.TestCase):
             self.assertEqual(first, hashes(out))
             self.assertEqual(first, hashes(ROOT / 'skills'))
 
+class AlignmentTests(unittest.TestCase):
+    def test_upstream_alignment_and_missing_gate_detected(self):
+        from audit_alignment import audit
+        import shutil
+        source = ROOT.parent / 'ease-cc-plugins'
+        self.assertTrue(audit(source, ROOT / 'skills')['passed'])
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'skills'
+            shutil.copytree(ROOT / 'skills', out)
+            (out / 'ease-resources/references/ease-spec/gates/flow-3-delivery.md').unlink()
+            result = audit(source, out)
+            self.assertFalse(result['passed'])
+            self.assertTrue(any('flow-3-delivery.md' in error for error in result['errors']))
+
+    def test_detached_non_git_project_uses_shipped_templates(self):
+        import os
+        scripts = ROOT / 'skills/ease-resources/references/ease-spec/scripts/bash'
+        with tempfile.TemporaryDirectory(prefix='ease-business-') as tmp:
+            project = Path(tmp)
+            env = dict(os.environ)
+            for name in ('GIT_DIR', 'GIT_WORK_TREE', 'SPECIFY_FEATURE', 'EASE_FEATURE_DIR'):
+                env.pop(name, None)
+            subprocess.run(['bash', str(scripts / 'create-new-feature.sh'), '--json', '--feature-dir', '001-example/flow-1-analyze', 'example'],
+                           cwd=project, env=env, check=True, capture_output=True)
+            feature = project / '.eases/001-example/flow-1-analyze'
+            expected = scripts.parent.parent / 'templates/spec-template.md'
+            self.assertEqual((feature / 'spec.md').read_bytes(), expected.read_bytes())
+            env['EASE_FEATURE_DIR'] = '001-example/flow-1-analyze'
+            subprocess.run(['bash', str(scripts / 'setup-plan.sh'), '--json'], cwd=project, env=env, check=True, capture_output=True)
+            self.assertEqual((feature / 'plan.md').read_bytes(), (scripts.parent.parent / 'templates/plan-template.md').read_bytes())
+            # Project-specific overrides must still take precedence.
+            custom = project / '.specify/templates'
+            custom.mkdir(parents=True)
+            (custom / 'plan-template.md').write_text('project plan')
+            subprocess.run(['bash', str(scripts / 'setup-plan.sh'), '--json'], cwd=project, env=env, check=True, capture_output=True)
+            self.assertEqual((feature / 'plan.md').read_text(), 'project plan')
+
 if __name__ == '__main__':
     unittest.main()

@@ -29,7 +29,8 @@ analyze-code、arch-docs 四个预处理命令。冒号入口由随包提供的 
 
 读取领域技能即读取其 SKILL.md，不依赖 Claude 的 Skill 工具或自动技能发现。
 读取 `commands/<命令>.md` 完成阶段交接，不把 `/ease:xxx` 当作 shell 命令执行。
-源脚本按原样保留；运行前检查其参数和路径，不能假定在源插件仓库中运行。
+脚本仅做显式的 DSH 安装位置适配：非 Git 项目使用当前目录，项目模板优先，
+缺失时使用包内模板。运行前确认当前目录就是业务项目，不能从安装目录启动业务流程。
 
 ## 流程与能力边界
 
@@ -42,8 +43,14 @@ analyze-code、arch-docs 四个预处理命令。冒号入口由随包提供的 
 - `--worktree` 使用内化的 ease-spec worktree 合同与脚本；在用户项目运行。
   当前移植保留这些脚本，不承诺所有平台都已完成端到端验证。
 - 源 frontmatter 的工具授权、model、scripts、handoffs 不产生 DSH 运行时行为。
-  按实际可用工具执行；子代理不可用时在当前会话完成工作，不虚构代理或工具。
-- ease-tools、ease-poc、历史 contracts-unified/schemas 等未提供的引用不代表
+  按实际可用工具执行；子代理不可用时允许在当前会话分角色执行，但必须结束生产遍、
+  冻结待审对象，再单独进行只读验收遍；不能把生产者自检当作独立验收或跳过反证与集合对账。
+- Flow 3 的强制故障分流使用包内 `references/systematic-debugging/SKILL.md`；
+  技术可行性验证使用 `references/ease-poc/SKILL.md`。调试文档中的
+  `superpowers:test-driven-development` 使用包内 TDD 资料；
+  `superpowers:verification-before-completion` 表示完成前执行并读取真实测试/构建证据，
+  使用 ease-qa 和阶段门禁验证，不假定外部 superpowers 插件存在。
+- 其他 ease-tools、历史 contracts-unified/schemas 等未提供的引用不代表
   已安装功能。需要时检查可用能力；若是强制门禁缺少的资源，应报告缺口并停止，
   不编造 PASS。可选提交/评审工具可用本会话中的常规操作替代。
 

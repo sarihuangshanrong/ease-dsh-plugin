@@ -469,7 +469,7 @@ PASS
 | 阶段 | 协作技能 | 触发场景 | 调用方式 |
 |------|----------|----------|----------|
 | 设计测试用例/覆盖策略 | `ease-testing` | 需要系统性覆盖、MC/DC、语言框架规范 | 参考 `references/ease-testing/SKILL.md` |
-| Bug 定位与复现 | `systematic-debugging`（ease-tools） | 需要根因分析/最小复现 | 参考 `plugins/ease-tools/skills/systematic-debugging/SKILL.md` |
+| Bug 定位与复现 | `systematic-debugging`（ease-tools） | 需要根因分析/最小复现 | 参考 `references/systematic-debugging/SKILL.md` |
 | 变更提交 | `git-commit`（ease-tools） | 需要生成高质量提交信息 | 参考 `plugins/ease-tools/skills/git-commit/SKILL.md` |
 
 ## 目录结构与输出位置

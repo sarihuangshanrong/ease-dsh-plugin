@@ -18,7 +18,7 @@ DSH 原生技能名及斜杠解析不支持冒号，因此必须加载随包提�
 | Claude plugin / skill / command 与 DSH 实现核实 | 完成，见 CONVERSION.md |
 | starter、4 个阶段命令转换 | 完成 |
 | constitution / bootstrap-system / analyze-code / arch-docs | 转换完成 |
-| 14 个领域资料与共享模板 | 已内化，仍有外部依赖报告 |
+| 16 个领域资料与共享模板 | 已内化，仍有外部依赖报告 |
 | 冒号命令适配与非持久化 profile overlay | 已实现并用实际 DSH 组件验证 |
 | 可重复转换、复制安装、完整 ZIP 分发 | 已实现并测试 |
 | BRD/TRD 全流程模型实测 | 未执行 |
@@ -36,6 +36,14 @@ BRD 路线为 Flow 1→2→3；TRD 的 Flow 1 内置方案与任务，直接进�
 - `skills/`：生成内容，不手工改。`ease-resources/conversion-report.json` 记录缺口。
 - `tests/`：转换、安装、实际 DSH 发现及事件触发测试。
 - `README.md`：启动和分发操作。
+
+## 本轮对齐审计
+
+已补齐 Flow 3 强制依赖 systematic-debugging 和技术验证 ease-poc；修复安装位置
+导致的项目根与模板查找问题，明确只读第二遍不能被同会话自检替代。
+新增 source-manifest.json 和 audit_alignment.py，可逐文件检查上游漂移与缺失资源。
+9 个命令、199 个参考文件、14 个共享模板对齐检查通过；8 项 Python 测试通过。
+见 ALIGNMENT.md。
 
 ## 后续重点
 
